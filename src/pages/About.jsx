@@ -15,7 +15,7 @@ export default function About() {
       {/* --- SIMPLE PAGE HEADER --- */}
       <div className="w-full px-6 lg:px-12 py-12 md:py-20 border-b border-slate-100">
         <nav className="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">
-          <Link to="/" className="hover:text-[#10b981] transition-colors">Home</Link>
+          <Link to="/" className="hover:text-[#4F46E5] transition-colors">Home</Link>
           <ChevronRight size={14} className="text-slate-300" />
           <span className="text-slate-900">About Us</span>
         </nav>
@@ -33,19 +33,19 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <span className="w-8 h-[2px] bg-[#10b981]"></span>
-              <span className="text-[11px] font-black text-[#10b981] uppercase tracking-[3px]">The Vision</span>
+              <span className="w-8 h-[2px] bg-[#4F46E5]"></span>
+              <span className="text-[11px] font-black text-[#4F46E5] uppercase tracking-[3px]">The Vision</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">Built on trust and precision</h2>
           </div>
           <div className="space-y-6">
             <p className="text-slate-600 text-lg leading-relaxed">
-              Founded in 2026, Optimum Prints was established to solve a singular challenge: making the acquisition of high-performance printing infrastructure simple, transparent, and absolutely authentic.
+              Founded in 2026, Printer Mania was established to solve a singular challenge: making the acquisition of high-performance printing infrastructure simple, transparent, and absolutely authentic.
             </p>
             <p className="text-slate-600 text-lg leading-relaxed">
               As a new generation partner, we bridge the gap between complex industrial technology and a seamless, personalized experience. Technology should work as hard as you do.
             </p>
-            <Link to="/shop" className="inline-flex items-center gap-2 text-[#10b981] font-bold hover:underline">
+            <Link to="/shop" className="inline-flex items-center gap-2 text-[#4F46E5] font-bold hover:underline">
               Browse our catalog <ArrowRight size={18} />
             </Link>
           </div>
@@ -59,7 +59,7 @@ export default function About() {
             { icon: Headphones, title: "Quick assistance", desc: "Factory-trained technicians providing troubleshooting, installation guidance, and long-term hardware maintenance." }
           ].map((item, i) => (
             <div key={i} className="space-y-6">
-              <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-slate-50 text-[#10b981]">
+              <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-slate-50 text-[#4F46E5]">
                 <item.icon size={24} />
               </div>
               <h3 className="text-xl font-bold text-slate-900 capitalize">{item.title}</h3>
@@ -72,7 +72,7 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <Target className="text-[#10b981]" size={20} />
+              <Target className="text-[#4F46E5]" size={20} />
               <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Our mission</span>
             </div>
             <h3 className="text-2xl font-bold text-slate-900 capitalize">The customer standard</h3>
@@ -82,7 +82,7 @@ export default function About() {
           </div>
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <Users className="text-[#10b981]" size={20} />
+              <Users className="text-[#4F46E5]" size={20} />
               <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Our community</span>
             </div>
             <h3 className="text-2xl font-bold text-slate-900 capitalize">Nationwide reach</h3>
@@ -94,7 +94,7 @@ export default function About() {
 
         {/* --- ADVANTAGE LIST (SIMPLE) --- */}
         <div className="bg-slate-50 rounded-[2rem] p-8 md:p-16">
-          <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">The Optimum Prints Advantage</h2>
+          <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">The Printer Mania Advantage</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { title: "Verified status", icon: ShieldCheck },
@@ -107,7 +107,7 @@ export default function About() {
               { title: "Professional hub", icon: Wrench }
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center text-center gap-4 group">
-                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-white text-slate-400 group-hover:text-[#10b981] group-hover:shadow-md transition-all">
+                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-white text-slate-400 border border-slate-100 group-hover:text-[#4F46E5] group-hover:border-[#4F46E5] transition-all">
                   <item.icon size={20} />
                 </div>
                 <h4 className="text-sm font-bold text-slate-700 capitalize">{item.title}</h4>

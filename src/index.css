@@ -4,7 +4,7 @@
   --font-sans: "Heebo", sans-serif;
   --primary: #0f172a;
   --primary-hover: #1e293b;
-  --secondary: #10b981;
+  --secondary: #4F46E5;
   --accent: #34d399;
   --background: #ffffff;
   --foreground: #0f172a;
@@ -19,7 +19,7 @@
   --font-snpro: "Heebo", sans-serif;
   --color-primary: #0f172a;
   --color-primary-hover: #1e293b;
-  --color-secondary: #10b981;
+  --color-secondary: #4F46E5;
   --color-accent: #34d399;
   --color-brand: #0f172a;
 }
@@ -37,7 +37,7 @@ body {
   .glass {
     @apply bg-white/70 backdrop-blur-md border border-white/20;
   }
-  
+
   .glass-dark {
     @apply bg-black/40 backdrop-blur-md border border-white/10;
   }
@@ -51,9 +51,17 @@ body {
   }
 
   @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: .5; }
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: .5;
+    }
   }
+
   .animate-pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
@@ -61,13 +69,16 @@ body {
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
   }
+
   .custom-scrollbar::-webkit-scrollbar-track {
     background: transparent;
   }
+
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background: #f1f5f9;
     border-radius: 10px;
   }
+
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #e2e8f0;
   }

@@ -10,14 +10,9 @@ import {
   Menu,
   X,
   ChevronDown,
-  Mail,
-  Truck,
   LayoutGrid,
-  Zap,
-  Sparkles,
+  Mail,
   ArrowRight,
-  TrendingUp,
-  Package
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -29,7 +24,7 @@ export default function Header() {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isSearchCatOpen, setIsSearchCatOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,21 +34,25 @@ export default function Header() {
   const searchRef = useRef(null);
   const searchCatRef = useRef(null);
 
+  const isHomePage = location.pathname === '/';
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handleScroll);
 
     fetch(`${API_BASE_URL}/categories`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (data.status === 'success') {
-          const printerParent = data.data.find(cat => cat.slug === 'printers' || cat.id === 46);
+          const printerParent = data.data.find(
+            (cat) => cat.slug === 'printers' || cat.id === 46
+          );
           if (printerParent && printerParent.children) {
             setCategories(printerParent.children);
           }
         }
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
 
     const checkUser = () => {
       const storedUser = localStorage.getItem('user');
@@ -71,30 +70,33 @@ export default function Header() {
         setIsSearchCatOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
+
+    document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('storage', checkUser);
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
-  // LIVE SEARCH LOGIC
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchValue.length > 1) {
         setIsLoading(true);
-        fetch(`${API_BASE_URL}/products?search=${searchValue}`)
-          .then(res => res.json())
-          .then(data => {
+        fetch(`${API_BASE_URL}/products?search=${encodeURIComponent(searchValue)}`)
+          .then((res) => res.json())
+          .then((data) => {
             if (data.status === 'success') {
               setSearchResults(data.data);
+            } else {
+              setSearchResults([]);
             }
             setIsLoading(false);
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
+            setSearchResults([]);
             setIsLoading(false);
           });
       } else {
@@ -105,21 +107,13 @@ export default function Header() {
     return () => clearTimeout(timer);
   }, [searchValue]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    setUser(null);
-    window.dispatchEvent(new Event('storage'));
-    navigate('/login');
-  };
-
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Shop Products', path: '/shop' },
+    { name: 'Shop', path: '/shop' },
     { name: 'About Us', path: '/about' },
-    { name: 'Support', path: '/contact' },
+    { name: 'Contact', path: '/contact' },
     { name: 'FAQ', path: '/faq' },
   ];
-
 
   const handleSearchTrigger = (term) => {
     const searchParam = term || searchValue;
@@ -130,352 +124,403 @@ export default function Header() {
     }
   };
 
-  return (
-    <header className="w-full z-[100] relative font-['Heebo']">
+  const getImagePath = (product) => {
+    let imagePath = '/logo/fabicon.png';
+    try {
+      const images = JSON.parse(product.images);
+      if (images && images.length > 0) {
+        imagePath = `/${images[0].replace(/\\/g, '/')}`;
+      }
+    } catch (e) { }
+    return imagePath;
+  };
 
-      {/* 1. TOP UTILITY BAR */}
-      <div className="w-full bg-slate-950 text-white/80 py-2.5 px-4 sm:px-10 border-b border-white/5 hidden md:block relative z-[110]">
-        <div className="w-full flex justify-between items-center text-[12px] font-medium tracking-wide capitalize">
-          <div className="flex items-center gap-6 w-[25%] normal-case">
-            <a href="mailto:info@optimumprints.shop" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Mail size={13} className="text-[#10b981]" />
-              <span className="lowercase">info@optimumprints.shop</span>
-            </a>
+  return (
+    <header className={`w-full z-[1000] font-['Heebo'] ${isHomePage && !scrolled ? 'absolute top-0 left-0' : 'relative'}`}>
+
+      {/* TOP STRIP - SOLID BACKGROUND */}
+      <div className="hidden lg:block border-b border-white/5 bg-[#4f46e5] text-white relative z-[1001]">
+        <div className="max-w-full mx-auto px-4 sm:px-8 xl:px-24 h-[42px] flex items-center justify-between">
+
+          {/* REFINED EMAIL STYLING */}
+          <div className="flex items-center group cursor-pointer">
+            <div className="flex items-center gap-2.5 px-3 py-1 bg-white/10 border border-white/10 rounded-full group-hover:border-[#4f46e5] transition-all duration-300">
+              <Mail size={13} className="text-white" />
+              <span className="text-[12px] font-bold text-white/90 tracking-tight group-hover:text-white transition-colors">info@printermania.shop</span>
+            </div>
           </div>
 
-          <div className="flex items-center justify-end gap-6 w-[25%]">
-            <Link to="/track-order" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Truck size={14} className="text-[#10b981]" />
-              <span>Track Order</span>
-            </Link>
-            <div className="h-3 w-[1px] bg-white/20"></div>
-            <Link to={user ? '/profile' : '/login'} className="flex items-center gap-2 hover:text-white transition-colors">
-              <User size={14} className="text-[#10b981]" />
-              <span>{user ? 'My Account' : 'Login / Register'}</span>
-            </Link>
+          {/* NAVIGATION LINKS */}
+          <div className="flex items-center">
+            {navLinks.map((link, index) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`text-[13px] font-bold tracking-tight px-5 py-1 transition-all duration-300 relative group ${location.pathname === link.path ? 'text-black' : 'text-white/70 hover:text-red-600'
+                  }`}
+              >
+                {link.name}
+                {index !== navLinks.length - 1 && (
+                  <span className="absolute right-0 top-1/2 -translate-y-1/2 h-3 w-px bg-white/20" />
+                )}
+                <span className={`absolute bottom-0 left-5 right-5 h-[1.5px] bg-[#4f46e5] transition-all duration-300 ${location.pathname === link.path ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                  }`}></span>
+              </Link>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* 2. MAIN HUB & SMART SEARCH */}
-      <div className="w-full bg-white py-5 px-4 sm:px-10 border-b border-slate-100 relative z-[100]">
-        <div className="w-full flex items-center justify-between gap-8 sm:gap-12">
+      {/* MAIN HEADER - OVERLAY ON HOME PAGE */}
+      <div
+        className={`w-full transition-all duration-500 ${scrolled
+          ? 'fixed top-0 left-0 bg-white border-b border-[#f0f0f0] z-[1500]'
+          : isHomePage
+            ? 'bg-transparent border-white/10'
+            : 'bg-white  border-[#f0f0f0]'
+          }`}
+      >
+        <div className="max-w-full mx-auto px-4 sm:px-8 xl:px-24 py-4 md:py-4">
+          <div className="flex items-center justify-between gap-6 xl:gap-16">
 
-          <Link to="/" className="shrink-0">
-            <img src="/logo/logo.png" alt="Optimum Prints" className="h-10 md:h-14 object-contain" />
-          </Link>
-
-          {/* THE SMART SEARCH ENGINE */}
-          <div className="hidden lg:flex flex-1 max-w-[850px] relative" ref={searchRef}>
-            <div
-              className={`w-full h-[54px] flex items-center bg-slate-50 rounded-2xl border-2 transition-all duration-300 ${isSearchFocused ? 'border-[#10b981] bg-white shadow-[0_10px_40px_-10px_rgba(16,185,129,0.2)]' : 'border-slate-100'
+            {/* MOBILE MENU BUTTON */}
+            <button
+              className={`lg:hidden w-10 h-10 rounded-full border flex items-center justify-center transition-colors ${!scrolled && isHomePage ? 'border-white/20 text-white' : 'border-[#e0e0e0] text-[#222]'
                 }`}
+              onClick={() => setIsMobileMenuOpen(true)}
             >
-              {/* CATEGORY SELECTOR IN SEARCH */}
-              <div
-                ref={searchCatRef}
-                className="relative h-full shrink-0"
-              >
+              <Menu size={20} />
+            </button>
+
+            {/* LOGO */}
+            <Link to="/" className="shrink-0">
+              <img
+                src="/logo/logo.png"
+                alt="Printer Mania"
+                className="h-8 md:h-10 xl:h-12 object-contain transition-all duration-300"
+              />
+            </Link>
+
+            {/* CATEGORY + SEARCH AREA */}
+            <div
+              ref={searchRef}
+              className="hidden lg:flex flex-1 items-center max-w-[950px]"
+            >
+              <div className="flex items-center w-full">
+                {/* CATEGORY SELECTOR */}
                 <div
-                  onClick={() => setIsSearchCatOpen(!isSearchCatOpen)}
-                  className="px-6 border-r border-slate-200 hidden xl:flex items-center gap-2 text-slate-500 cursor-pointer hover:bg-slate-100 transition-colors h-full rounded-l-2xl"
+                  className="relative shrink-0 mr-4"
+                  ref={searchCatRef}
+                  onMouseEnter={() => setIsCategoryOpen(true)}
+                  onMouseLeave={() => {
+                    setIsCategoryOpen(false);
+                    setIsSearchCatOpen(false);
+                  }}
                 >
-                  <LayoutGrid size={18} />
-                  <span className="text-[13px] font-bold whitespace-nowrap capitalize">Categories</span>
-                  <ChevronDown size={14} className={`transition-transform duration-300 ${isSearchCatOpen ? 'rotate-180' : ''}`} />
+                  <button
+                    onClick={() => setIsSearchCatOpen((prev) => !prev)}
+                    className="h-[46px] px-6 rounded-full bg-[#4f46e5] text-white flex items-center gap-2.5 text-[14px] font-bold hover:bg-black transition-colors"
+                  >
+                    <LayoutGrid size={16} />
+                    <span>Categories</span>
+                    <ChevronDown size={14} className={`transition-transform duration-300 ${isSearchCatOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  <AnimatePresence>
+                    {(isCategoryOpen || isSearchCatOpen) && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute top-[calc(100%+12px)] left-0 w-[260px] bg-white border border-[#e8e8e8] rounded-2xl py-2 z-[2000] shadow-xl"
+                      >
+                        <div className="max-h-[380px] overflow-y-auto custom-scrollbar py-1">
+                          {categories.map((cat) => (
+                            <Link
+                              key={cat.id}
+                              to={`/shop?category=${cat.slug}`}
+                              onClick={() => {
+                                setIsCategoryOpen(false);
+                                setIsSearchCatOpen(false);
+                              }}
+                              className="flex items-center justify-between px-6 py-2.5 text-[14px] font-bold text-[#444] hover:text-[#4f46e5] hover:bg-[#f8f8ff] transition-all capitalize group"
+                            >
+                              <span>{cat.name}</span>
+                              <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all text-[#4f46e5]" />
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
-                {/* SEARCH CATEGORY DROPDOWN */}
-                <AnimatePresence>
-                  {isSearchCatOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-[calc(100%+8px)] left-0 w-[260px] bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-slate-100 py-3 z-[150]"
-                    >
-                      <div className="max-h-[400px] overflow-y-auto custom-scrollbar">
-                        {categories.map(cat => (
-                          <Link
-                            key={cat.id}
-                            to={`/shop?category=${cat.slug}`}
-                            onClick={() => setIsSearchCatOpen(false)}
-                            className="flex items-center gap-3 px-5 py-2.5 hover:bg-slate-50 text-sm font-bold text-slate-700 transition-colors capitalize group"
-                          >
-                            <span className="w-1.5 h-1.5 bg-slate-200 rounded-full group-hover:bg-[#10b981] transition-colors"></span>
-                            {cat.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                {/* PREMIUM SEARCH BAR */}
+                <div
+                  className={`relative flex-1 h-[48px] rounded-full border transition-all duration-300 ${isSearchFocused
+                    ? 'border-[#4f46e5] bg-white ring-4 ring-[#4f46e5]/10'
+                    : !scrolled && isHomePage
+                      ? 'border-white/20 bg-[#f9f9f9]'
+                      : 'border-[#e0e0e0] bg-[#f9f9f9]'
+                    }`}
+                >
+                  <input
+                    type="text"
+                    placeholder="Find genuine printers & accessories..."
+                    className={`w-full h-full bg-transparent pl-7 pr-16 text-[14px] outline-none font-medium ${!scrolled && isHomePage && !isSearchFocused ? 'text-[#999] placeholder:text-[#999]' : 'text-[#222] placeholder:text-[#999]'
+                      }`}
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    onFocus={() => setIsSearchFocused(true)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSearchTrigger()}
+                  />
 
-              <input
-                type="text"
-                placeholder="Search for printers, genuine ink, or specialized solutions..."
-                className="flex-1 bg-transparent px-6 outline-none text-slate-800 font-medium placeholder:text-slate-400 text-[15px]"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                onFocus={() => setIsSearchFocused(true)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearchTrigger()}
-              />
-              <button
-                onClick={() => handleSearchTrigger()}
-                className="h-full px-12 bg-[#10b981] text-white font-bold hover:bg-[#059669] transition-all flex items-center gap-3 rounded-r-[14px]"
-              >
-                <Search size={20} strokeWidth={3} />
-                <span>Search</span>
-              </button>
+                  <button
+                    onClick={() => handleSearchTrigger()}
+                    className={`absolute right-[5px] top-1/2 -translate-y-1/2 w-[40px] h-[40px] rounded-full flex items-center justify-center transition-all ${!scrolled && isHomePage && !isSearchFocused ? 'bg-[#4f46e5] text-white' : 'bg-[#4f46e5] text-white'
+                      } hover:scale-105 active:scale-95`}
+                  >
+                    <Search size={20} strokeWidth={2.5} />
+                  </button>
+
+                  {/* RESULTS DROPDOWN */}
+                  <AnimatePresence>
+                    {isSearchFocused && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 15 }}
+                        className="absolute top-[calc(100%+14px)] left-0 w-full bg-white border border-[#e8e8e8] rounded-3xl overflow-hidden z-[2000] shadow-2xl"
+                      >
+                        <div className="p-6">
+                          {searchValue.length > 1 ? (
+                            <>
+                              <h4 className="text-[11px] font-black text-[#aaa] mb-4 uppercase tracking-widest">
+                                Best Matches
+                              </h4>
+
+                              {isLoading ? (
+                                <div className="space-y-3">
+                                  {[1, 2, 3].map((i) => (
+                                    <div
+                                      key={i}
+                                      className="h-[68px] rounded-2xl bg-[#f5f5f5] animate-pulse"
+                                    />
+                                  ))}
+                                </div>
+                              ) : searchResults.length > 0 ? (
+                                <div className="space-y-2 max-h-[400px] overflow-y-auto custom-scrollbar pr-1">
+                                  {searchResults.map((product) => (
+                                    <Link
+                                      key={product.id}
+                                      to={`/product/${product.slug}`}
+                                      onClick={() => setIsSearchFocused(false)}
+                                      className="flex items-center gap-4 p-3 rounded-2xl hover:bg-[#f8f8ff] transition-all group border border-transparent hover:border-[#4f46e5]/10"
+                                    >
+                                      <div className="w-14 h-14 rounded-xl border border-[#efefef] bg-white flex items-center justify-center overflow-hidden shrink-0">
+                                        <img
+                                          src={getImagePath(product)}
+                                          alt={product.name}
+                                          className="w-full h-full object-contain p-1.5 transition-transform duration-500 group-hover:scale-110"
+                                          onError={(e) => {
+                                            e.target.src = '/logo/fabicon.png';
+                                          }}
+                                        />
+                                      </div>
+                                      <div className="min-w-0">
+                                        <p className="text-[14px] font-bold text-[#222] truncate group-hover:text-[#4f46e5] transition-colors">
+                                          {product.name}
+                                        </p>
+                                        <p className="text-[15px] font-black text-[#4f46e5] mt-0.5">
+                                          ${product.price}
+                                        </p>
+                                      </div>
+                                    </Link>
+                                  ))}
+                                </div>
+                              ) : (
+                                <p className="text-[14px] text-[#777] py-10 text-center font-medium">
+                                  No matches for "{searchValue}"
+                                </p>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              <h4 className="text-[11px] font-black text-[#aaa] mb-4 uppercase tracking-widest">
+                                Popular Searches
+                              </h4>
+                              <div className="flex flex-wrap gap-2">
+                                {['EcoTank', 'LaserJet Pro', 'Ink Cartridges', 'Scanners', 'Brother Printers'].map((tag) => (
+                                  <button
+                                    key={tag}
+                                    onClick={() => handleSearchTrigger(tag)}
+                                    className="px-5 py-2.5 rounded-full border border-[#e0e0e0] text-[13px] font-bold text-[#555] hover:border-[#4f46e5] hover:text-[#4f46e5] hover:bg-[#4f46e5]/5 transition-all"
+                                  >
+                                    {tag}
+                                  </button>
+                                ))}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
             </div>
 
-            {/* LIVE SUGGESTIONS & PRODUCT RESULTS */}
-            <AnimatePresence>
-              {isSearchFocused && !isSearchCatOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="absolute top-[calc(100%+12px)] left-0 w-full bg-white rounded-3xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] border border-slate-100 overflow-hidden p-6 z-[120] max-h-[500px] overflow-y-auto custom-scrollbar"
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                      {searchValue.length > 1 ? (
-                        <>
-                          <h4 className="flex items-center gap-2 text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">
-                            <Package size={14} className="text-[#10b981]" /> Products Found
-                          </h4>
-                          <div className="space-y-3">
-                            {isLoading ? (
-                              [1, 2, 3].map(i => <div key={i} className="h-16 bg-slate-50 animate-pulse rounded-xl"></div>)
-                            ) : searchResults.length > 0 ? (
-                              searchResults.map(product => {
-                                let imagePath = '/logo/fabicon.png';
-                                try {
-                                  const images = JSON.parse(product.images);
-                                  if (images && images.length > 0) {
-                                    imagePath = `/${images[0].replace(/\\/g, '/')}`;
-                                  }
-                                } catch (e) { }
+            {/* ACTION ICONS */}
+            <div className="flex items-center gap-3 sm:gap-5 shrink-0">
+              <Link
+                to="/shop"
+                className={`hidden md:flex h-[46px] px-8 rounded-full border-2 items-center justify-center text-[13px] font-black uppercase tracking-[0.1em] transition-all duration-300 hover:bg-[#4f46e5] hover:text-white ${!scrolled && isHomePage ? 'border-[#4f46e5] text-white' : 'border-[#4f46e5] text-[#4f46e5]'
+                  }`}
+              >
+                Shop Now
+              </Link>
 
-                                return (
-                                  <Link
-                                    key={product.id}
-                                    to={`/product/${product.slug}`}
-                                    onClick={() => setIsSearchFocused(false)}
-                                    className="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-xl transition-all group"
-                                  >
-                                    <div className="w-12 h-12 bg-white rounded-lg border border-slate-100 overflow-hidden shrink-0">
-                                      <img src={imagePath} alt={product.name} className="w-full h-full object-contain" onError={(e) => { e.target.src = '/logo/fabicon.png'; }} />
-                                    </div>
-                                    <div className="flex flex-col min-w-0">
-                                      <span className="text-sm font-bold text-slate-800 truncate group-hover:text-[#10b981]">{product.name}</span>
-                                      <span className="text-xs font-black text-[#10b981]">${product.price}</span>
-                                    </div>
-                                  </Link>
-                                );
-                              })
-                            ) : (
-                              <p className="text-sm font-medium text-slate-400 p-4">No products found for "{searchValue}"</p>
-                            )}
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <h4 className="flex items-center gap-2 text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">
-                            <TrendingUp size={14} className="text-[#10b981]" /> Trending Now
-                          </h4>
-                          <div className="flex flex-wrap gap-2">
-                            {['Laser Printers', 'Inkjet', 'EcoTank', 'Scanner', 'Cartridges', 'Ribbons'].map(tag => (
-                              <button key={tag} onClick={() => handleSearchTrigger(tag)} className="px-4 py-2 bg-slate-50 hover:bg-[#10b981] hover:text-white rounded-xl text-sm font-medium text-slate-600 transition-all capitalize">{tag}</button>
-                            ))}
-                          </div>
-                        </>
-                      )}
-                    </div>
+              <Link
+                to={user ? '/profile' : '/login'}
+                className={`w-[44px] h-[44px] rounded-full border flex items-center justify-center transition-all ${!scrolled && isHomePage ? 'border-white/20 bg-white/10 text-white' : 'border-[#e0e0e0] bg-[#fafafa] text-[#222]'
+                  } hover:border-[#4f46e5] hover:text-[#4f46e5]`}
+              >
+                <User size={20} strokeWidth={2} />
+              </Link>
 
-                    <div className="border-l border-slate-100 pl-8 hidden md:block">
-                      <h4 className="flex items-center gap-2 text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">
-                        <LayoutGrid size={14} className="text-[#10b981]" /> Quick Categories
-                      </h4>
-                      <div className="space-y-1">
-                        {categories.slice(0, 5).map(cat => (
-                          <Link key={cat.id} to={`/shop?category=${cat.slug}`} onClick={() => setIsSearchFocused(false)} className="flex items-center justify-between p-2 hover:bg-slate-50 rounded-xl group transition-all">
-                            <span className="text-sm font-bold text-slate-700 capitalize group-hover:text-[#10b981]">{cat.name}</span>
-                            <ArrowRight size={14} className="text-slate-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+              <Link
+                to="/wishlist"
+                className={`relative w-[44px] h-[44px] rounded-full border flex items-center justify-center transition-all ${!scrolled && isHomePage ? 'border-white/20 bg-white/10 text-white' : 'border-[#e0e0e0] bg-[#fafafa] text-[#222]'
+                  } hover:border-[#4f46e5] hover:text-[#4f46e5]`}
+              >
+                <Heart size={20} strokeWidth={2} />
+                <span className="absolute -top-1 -right-1 min-w-[20px] h-[20px] px-1 rounded-full bg-[#4f46e5] text-white text-[11px] font-black flex items-center justify-center border-2 border-white shadow-sm">
+                  {wishlistCount}
+                </span>
+              </Link>
+
+              <button
+                onClick={openCartDrawer}
+                className={`relative w-[44px] h-[44px] rounded-full flex items-center justify-center transition-all ${!scrolled && isHomePage ? 'bg-[#4f46e5] text-white' : 'bg-[#4f46e5] text-white'
+                  } hover:scale-105 active:scale-95`}
+              >
+                <ShoppingCart size={20} strokeWidth={2} />
+                <span className="absolute -top-1 -right-1 min-w-[20px] h-[20px] px-1 rounded-full bg-[#4f46e5] text-white text-[11px] font-black flex items-center justify-center border-2 border-white shadow-sm">
+                  {cartCount}
+                </span>
+              </button>
+            </div>
           </div>
 
-          {/* USER ACTIONS */}
-          <div className="flex items-center gap-4 sm:gap-8 capitalize">
-            <Link to={user ? '/profile' : '/login'} className="hidden md:flex items-center gap-3 group">
-              <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center text-slate-700 group-hover:bg-[#10b981] group-hover:text-white transition-all shadow-sm">
-                <User size={22} strokeWidth={1.5} />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[11px] font-medium text-slate-400 leading-none">Account</span>
-                <span className="text-[14px] font-bold text-slate-800 leading-tight">
-                  {user ? user.name.split(' ')[0] : 'Log In'}
-                </span>
-              </div>
-            </Link>
-
-            <Link to="/wishlist" className="hidden sm:flex items-center gap-3 group relative">
-              <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center text-slate-700 group-hover:bg-red-500 group-hover:text-white transition-all shadow-sm">
-                <Heart size={22} strokeWidth={1.5} />
-                {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-6 h-6 bg-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white shadow-lg">
-                    {wishlistCount}
-                  </span>
-                )}
-              </div>
-              <div className="flex flex-col hidden xl:flex">
-                <span className="text-[11px] font-medium text-slate-400 leading-none">Saved</span>
-                <span className="text-[14px] font-bold text-slate-800 leading-tight">Wishlist</span>
-              </div>
-            </Link>
-
-            <button onClick={openCartDrawer} className="flex items-center gap-4 group">
-              <div className="relative w-11 h-11 rounded-xl bg-slate-900 flex items-center justify-center text-white shadow-xl shadow-slate-200 group-hover:bg-[#10b981] transition-all group-hover:scale-105">
-                <ShoppingCart size={22} strokeWidth={2} />
-                {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 w-6 h-6 bg-[#10b981] text-white text-[11px] font-black rounded-full flex items-center justify-center border-2 border-slate-900">
-                    {cartCount}
-                  </span>
-                )}
-              </div>
-              <div className="flex flex-col hidden md:flex items-start">
-                <span className="text-[10px] font-bold text-slate-400 uppercase leading-none tracking-widest">My Cart</span>
-                <span className="text-[15px] font-bold text-slate-900 leading-tight">$0.00</span>
-              </div>
-            </button>
-
-            <button className="lg:hidden p-2 text-slate-900" onClick={() => setIsMobileMenuOpen(true)}>
-              <Menu size={32} />
-            </button>
+          {/* MOBILE SEARCH BAR */}
+          <div className="lg:hidden mt-5">
+            <div className={`flex-1 h-[48px] rounded-full border flex items-center px-5 transition-all ${!scrolled && isHomePage ? 'border-white/20 bg-white/10' : 'border-[#e0e0e0] bg-[#f9f9f9]'
+              }`}>
+              <Search size={20} className={!scrolled && isHomePage ? 'text-white/60' : 'text-[#888]'} />
+              <input
+                type="text"
+                placeholder="Search products..."
+                className={`w-full bg-transparent outline-none px-3 text-[14px] font-bold ${!scrolled && isHomePage ? 'text-white placeholder:text-white/60' : 'text-[#222]'
+                  }`}
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearchTrigger()}
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* SEARCH OVERLAY */}
+      {/* MOBILE MENU DRAWER */}
       <AnimatePresence>
-        {isSearchFocused && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-[2px] z-[90]"
-            onClick={() => setIsSearchFocused(false)}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* 3. NAVIGATION BAR */}
-      <div className={`hidden lg:block w-full bg-slate-900 border-b border-white/5 transition-all duration-300 ${scrolled ? 'fixed top-0 left-0 shadow-2xl z-[150]' : 'relative'}`}>
-        <div className="w-full px-4 sm:px-10 flex items-center justify-between capitalize">
-          <div className="flex items-center">
-            <div
-              className="relative"
-              onMouseEnter={() => setIsCategoryOpen(true)}
-              onMouseLeave={() => setIsCategoryOpen(false)}
+        {isMobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 z-[2000]"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              className="fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-white z-[2100] flex flex-col"
             >
-              <button className="flex items-center gap-4 px-10 h-[64px] bg-[#10b981] text-white font-bold text-[14px] tracking-wide hover:bg-[#059669] transition-colors">
-                <LayoutGrid size={20} />
-                <span>Shop By Categories</span>
-                <ChevronDown size={16} className={`transition-transform duration-300 ${isCategoryOpen ? 'rotate-180' : ''}`} />
-              </button>
+              <div className="p-6 border-b border-[#efefef] flex items-center justify-between">
+                <img src="/logo/logo.png" alt="Logo" className="h-8 object-contain" />
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-9 h-9 rounded-full border border-[#e0e0e0] flex items-center justify-center text-[#444]"
+                >
+                  <X size={18} />
+                </button>
+              </div>
 
-              <AnimatePresence>
-                {isCategoryOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 15 }}
-                    className="absolute top-full left-0 w-[300px] bg-white shadow-2xl border-x border-b border-slate-100 py-4 z-[200] normal-case"
-                  >
-                    {categories.map(cat => (
+              <div className="flex-1 overflow-y-auto p-6">
+                <div className="mb-8">
+                  <h3 className="text-[11px] font-black uppercase tracking-widest text-[#aaa] mb-4">Navigation</h3>
+                  <div className="space-y-1">
+                    {navLinks.map((link) => (
+                      <Link
+                        key={link.name}
+                        to={link.path}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="block py-3.5 text-[15px] font-bold text-[#222] border-b border-[#f9f9f9] last:border-0"
+                      >
+                        {link.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-[11px] font-black uppercase tracking-widest text-[#aaa] mb-4">Categories</h3>
+                  <div className="space-y-1">
+                    {categories.map((cat) => (
                       <Link
                         key={cat.id}
                         to={`/shop?category=${cat.slug}`}
-                        className="flex items-center justify-between px-8 py-3.5 text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#10b981] transition-all group capitalize"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="block py-3 text-[14px] font-bold text-[#555] capitalize"
                       >
-                        <span>{cat.name}</span>
-                        <Zap size={14} className="opacity-0 group-hover:opacity-100 text-[#10b981]" />
+                        {cat.name}
                       </Link>
                     ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                  </div>
+                </div>
+              </div>
 
-            <nav className="flex items-center ml-4">
-              {navLinks.map(link => (
+              <div className="p-6 border-t border-[#efefef] bg-[#fafafa]">
                 <Link
-                  key={link.name}
-                  to={link.path}
-                  className="px-8 h-[64px] flex items-center text-[14px] font-medium text-white/80 hover:text-white hover:bg-white/5 transition-all tracking-wide relative group"
+                  to={user ? '/profile' : '/login'}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 text-[14px] font-bold text-[#222]"
                 >
-                  {link.name}
-                  <span className="absolute bottom-0 left-8 right-8 h-[3px] bg-[#10b981] transition-all scale-x-0 group-hover:scale-x-100 origin-center"></span>
+                  <div className="w-8 h-8 rounded-full bg-white border border-[#e0e0e0] flex items-center justify-center">
+                    <User size={16} />
+                  </div>
+                  {user ? user.name.split(' ')[0] : 'Sign In / Register'}
                 </Link>
-              ))}
-            </nav>
-          </div>
-
-          <div className="flex items-center gap-8 hidden xl:flex normal-case">
-            <div className="flex items-center gap-3 text-white">
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-[#10b981]">
-                <Mail size={18} />
               </div>
-              <div className="flex flex-col text-right">
-                <span className="text-[10px] font-medium text-white/40 leading-none">Email Support</span>
-                <span className="text-[14px] font-bold text-white leading-tight">info@optimumprints.shop</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* MOBILE UI */}
-      <div className={`lg:hidden w-full bg-[#10b981] px-4 py-3 flex gap-3 transition-all ${scrolled ? 'fixed top-0 left-0 shadow-lg z-[150]' : 'relative'}`}>
-        <div className="flex-1 h-[48px] bg-white rounded-xl flex items-center px-4">
-          <Search size={20} className="text-slate-300" />
-          <input
-            type="text"
-            placeholder="Search..."
-            className="bg-transparent border-none outline-none px-3 text-sm w-full font-bold text-slate-800"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearchTrigger()}
-          />
-        </div>
-        <button onClick={openCartDrawer} className="w-[48px] h-[48px] bg-white/20 rounded-xl flex items-center justify-center text-white relative">
-          <ShoppingCart size={22} />
-        </button>
-      </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 5px;
         }
-        .animate-marquee {
-          display: flex;
-          animation: marquee 30s linear infinite;
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
         }
-        .animate-marquee:hover {
-          animation-play-state: paused;
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #e0e0e0;
+          border-radius: 20px;
         }
       `}</style>
-
     </header>
   );
 }

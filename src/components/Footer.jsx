@@ -6,9 +6,13 @@ import {
   ChevronRight,
   Send,
   ShieldCheck,
-  FileText,
-  Truck,
-  RotateCcw
+  Globe,
+  Lock,
+  ArrowUpRight,
+  Instagram,
+  Twitter,
+  Facebook,
+  Linkedin
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import API_BASE_URL from '../config';
@@ -26,7 +30,7 @@ export default function Footer() {
         if (data.status === 'success') {
           const printerParent = data.data.find(cat => cat.slug === 'printers' || cat.id === 46);
           if (printerParent && printerParent.children) {
-            setCategories(printerParent.children.slice(0, 6));
+            setCategories(printerParent.children.slice(0, 5));
           }
         }
       })
@@ -38,7 +42,6 @@ export default function Footer() {
     setLoading(true);
     setStatus(null);
     try {
-      // Simulate API call for newsletter subscription
       await new Promise(resolve => setTimeout(resolve, 1000));
       setStatus('success');
       setEmail('');
@@ -51,151 +54,154 @@ export default function Footer() {
   };
 
   return (
-    <footer className="w-full bg-slate-950 font-['Heebo']">
+    <footer className="w-full bg-[#fafbfc] font-['Heebo'] border-t border-slate-100">
 
-      {/* 1. NEWSLETTER STRIP */}
-      <div className="w-full border-b border-white/5 bg-slate-900/50">
-        <div className="max-w-full mx-auto px-6 lg:px-12 py-12">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
-            <div className="max-w-xl text-center lg:text-left">
-              <h3 className="text-2xl md:text-3xl font-black text-white capitalize mb-2">Subscribe to our newsletter</h3>
-              <p className="text-slate-400 font-medium">Receive the latest updates on new arrivals and exclusive technical solutions.</p>
+      {/* MAIN FOOTER ENGINE */}
+      <div className="max-w-full mx-auto px-6 lg:px-24 py-20 md:py-28">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 xl:gap-24">
+
+          {/* BRAND & NEWSLETTER SIDE */}
+          <div className="lg:col-span-4">
+            <Link to="/" className="inline-block mb-8">
+              <img src="/logo/logo.png" alt="Printer Mania" className="h-9 object-contain" />
+            </Link>
+            <p className="text-slate-500 text-base font-medium leading-relaxed max-w-sm mb-10">
+              Redefining professional printing with precision-engineered hardware and global logistics expertise.
+            </p>
+
+            <div className="space-y-8">
+              <form onSubmit={handleSubscribe} className="max-w-md relative group">
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-3 block">Join our newsletter</span>
+                <div className="relative">
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Professional email"
+                    className="w-full h-12 bg-white border border-slate-200 rounded-xl px-5 text-slate-900 text-sm outline-none focus:border-[#4f46e5] transition-all pr-12"
+                  />
+                  <button
+                    disabled={loading}
+                    type="submit"
+                    className="absolute right-1.5 top-1.5 h-9 w-9 bg-[#222] text-white rounded-lg flex items-center justify-center hover:bg-[#4f46e5] transition-all disabled:opacity-50"
+                  >
+                    <Send size={16} />
+                  </button>
+                </div>
+                <AnimatePresence>
+                  {status === 'success' && (
+                    <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute -bottom-6 left-2 text-[10px] font-bold text-emerald-600 uppercase tracking-widest">
+                      Confirmed
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </form>
+
+
             </div>
-            <form onSubmit={handleSubscribe} className="w-full lg:w-[450px] relative">
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email address"
-                className="w-full h-[56px] bg-white/5 border border-white/10 rounded-2xl px-6 text-white outline-none focus:border-[#10b981] transition-all"
-              />
-              <button disabled={loading} type="submit" className="absolute right-2 top-2 h-[40px] px-6 bg-[#10b981] text-white rounded-xl font-bold flex items-center gap-2 hover:bg-[#059669] transition-all disabled:opacity-50">
-                <span>{loading ? 'Joining...' : 'Join'}</span> {!loading && <Send size={16} />}
-              </button>
-              <AnimatePresence>
-                {status === 'success' && (
-                  <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute -bottom-6 left-2 text-[11px] font-bold text-[#10b981]">
-                    Successfully subscribed!
-                  </motion.p>
-                )}
-                {status === 'error' && (
-                  <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute -bottom-6 left-2 text-[11px] font-bold text-red-500">
-                    Subscription failed. Please try again.
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </form>
+          </div>
+
+          {/* DYNAMIC LINKS SIDE */}
+          <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-10">
+
+            {/* DEPARTMENTS */}
+            <div>
+              <h4 className="text-slate-900 font-black text-[10px] uppercase tracking-[0.3em] mb-8 relative">
+                Department
+                <span className="absolute -bottom-3 left-0 w-5 h-[2px] bg-[#4f46e5] rounded-full"></span>
+              </h4>
+              <ul className="space-y-4">
+                {categories.map(cat => (
+                  <li key={cat.id}>
+                    <Link to={`/shop?category=${cat.slug}`} className="text-slate-500 hover:text-[#4f46e5] font-bold text-[13px] transition-all">
+                      <span className="capitalize">{cat.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* CORPORATE */}
+            <div>
+              <h4 className="text-slate-900 font-black text-[10px] uppercase tracking-[0.3em] mb-8 relative">
+                Corporate
+                <span className="absolute -bottom-3 left-0 w-5 h-[2px] bg-[#4f46e5] rounded-full"></span>
+              </h4>
+              <ul className="space-y-4">
+                {['About Us', 'Contact Us', 'FAQs', 'Track Order', 'Blog'].map(item => (
+                  <li key={item}>
+                    <Link to={`/${item.toLowerCase().replace(' ', '-')}`} className="text-slate-500 hover:text-[#4f46e5] font-bold text-[13px] transition-all">
+                      <span>{item}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* LEGAL (MOVED UP) */}
+            <div>
+              <h4 className="text-slate-900 font-black text-[10px] uppercase tracking-[0.3em] mb-8 relative">
+                Policy
+                <span className="absolute -bottom-3 left-0 w-5 h-[2px] bg-[#4f46e5] rounded-full"></span>
+              </h4>
+              <ul className="space-y-4">
+                {[
+                  { name: 'Privacy Policy', path: '/privacy-policy' },
+                  { name: 'Terms of Use', path: '/terms' },
+                  { name: 'Shipping', path: '/shipping-policy' },
+                  { name: 'Returns', path: '/return-policy' },
+                  { name: 'Cookies', path: '/cookie-policy' }
+                ].map(link => (
+                  <li key={link.name}>
+                    <Link to={link.path} className="text-slate-500 hover:text-[#4f46e5] font-bold text-[13px] transition-all">
+                      <span>{link.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* CONTACT */}
+            <div>
+              <h4 className="text-slate-900 font-black text-[10px] uppercase tracking-[0.3em] mb-8 relative">
+                Support
+                <span className="absolute -bottom-3 left-0 w-5 h-[2px] bg-[#4f46e5] rounded-full"></span>
+              </h4>
+              <div className="space-y-5">
+                <div className="flex flex-col">
+                  <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Direct Line</span>
+                  <a href="mailto:info@printermania.shop" className="text-slate-900 font-bold text-[13px] hover:text-[#4f46e5] transition-colors break-all">info@printermania.shop</a>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">USA HQ</span>
+                  <span className="text-slate-900 font-bold text-[13px] leading-tight">Shepherdstown, WV 25443</span>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
 
-      {/* 2. MAIN FOOTER CONTENT */}
-      <div className="w-full px-6 lg:px-12 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 lg:gap-20">
+      {/* ULTRA-MINIMAL BOTTOM BAR */}
+      <div className="w-full border-t border-slate-100 bg-white py-8">
+        <div className="max-w-full mx-auto px-6 lg:px-24 flex flex-col md:flex-row items-center justify-between gap-6">
 
-          {/* Brand Column */}
-          <div className="lg:col-span-4 space-y-8">
-            <Link to="/">
-              <img src="/logo/logo.png" alt="Optimum Prints" className="h-10 invert brightness-0 invert" />
-            </Link>
-            <p className="text-slate-400 text-lg font-medium leading-relaxed max-w-sm">
-              Providing enterprise-grade printing solutions and high-quality supplies for modern workspaces. Your trusted partner for genuine hardware and expert support.
+          <div className="flex items-center gap-4">
+            <p className="text-slate-400 text-[11px] font-bold tracking-wide">
+              &copy; {new Date().getFullYear()} <span className="text-slate-900">Printer Mania Inc.</span> All rights reserved.
             </p>
           </div>
 
-          {/* Links Columns */}
-          <div className="lg:col-span-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-
-              {/* Category Links */}
-              <div>
-                <h4 className="text-white font-black text-sm uppercase tracking-[2px] mb-8">Categories</h4>
-                <ul className="space-y-4">
-                  {categories.map(cat => (
-                    <li key={cat.id}>
-                      <Link to={`/shop?category=${cat.slug}`} className="text-slate-400 hover:text-[#10b981] font-bold text-[14px] transition-colors flex items-center gap-2 group">
-                        <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                        <span className="capitalize">{cat.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Company Links */}
-              <div>
-                <h4 className="text-white font-black text-sm uppercase tracking-[2px] mb-8">Company</h4>
-                <ul className="space-y-4">
-                  {['Shop all', 'About us', 'FAQs', 'Contact us', 'Track order'].map(item => (
-                    <li key={item}>
-                      <Link to={`/${item.toLowerCase().replace(' ', '-')}`} className="text-slate-400 hover:text-[#10b981] font-bold text-[14px] transition-colors flex items-center gap-2 group">
-                        <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                        <span>{item}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Legal Links (MOVED TO TOP) */}
-              <div>
-                <h4 className="text-white font-black text-sm uppercase tracking-[2px] mb-8">Legal policy</h4>
-                <ul className="space-y-4">
-                  {[
-                    { name: 'Privacy Policy', path: '/privacy-policy' },
-                    { name: 'Terms of Service', path: '/terms' },
-                    { name: 'Shipping Policy', path: '/shipping-policy' },
-                    { name: 'Return Policy', path: '/return-policy' }
-                  ].map(link => (
-                    <li key={link.name}>
-                      <Link to={link.path} className="text-slate-400 hover:text-[#10b981] font-bold text-[14px] transition-colors flex items-center gap-2 group">
-                        <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                        <span>{link.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Contact Info */}
-              <div>
-                <h4 className="text-white font-black text-sm uppercase tracking-[2px] mb-8">Support</h4>
-                <div className="space-y-6">
-                  <div className="flex items-start gap-3">
-                    <Mail size={18} className="text-[#10b981] mt-1 shrink-0" />
-                    <div>
-                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Email address</p>
-                      <p className="text-white font-bold text-sm">info@optimumprints.shop</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <MapPin size={18} className="text-[#10b981] mt-1 shrink-0" />
-                    <div>
-                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Headquarters</p>
-                      <p className="text-white font-bold text-sm leading-snug">437 N Illinois St, Indianapolis, IN 46204, United States</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 3. BOTTOM BAR (CLEANED) */}
-      <div className="w-full border-t border-white/5 py-10">
-        <div className="max-w-full mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-slate-500 text-sm font-medium">
-            &copy; {new Date().getFullYear()} <span className="text-white">Optimum Prints.</span> All rights reserved.
-          </p>
           <div className="flex items-center gap-8">
-            <img src="/logo/PayPal.svg.webp" alt="PayPal" className="h-5 opacity-40 grayscale" />
-            <div className="flex items-center gap-2 text-slate-600 text-[10px] font-black uppercase tracking-[2px]">
-              <ShieldCheck size={14} /> Secured by SSL Encryption
+            <img src="/logo/PayPal.svg.webp" alt="PayPal" className="h-3.5 opacity-30 grayscale hover:opacity-100 transition-all duration-500" />
+            <div className="h-3 w-px bg-slate-100"></div>
+            <div className="flex items-center gap-2 text-slate-400 text-[9px] font-black uppercase tracking-[0.2em]">
+              <Lock size={11} className="text-emerald-500" /> Secured Transaction
             </div>
           </div>
+
         </div>
       </div>
 

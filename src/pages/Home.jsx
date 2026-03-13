@@ -70,7 +70,7 @@ export default function Home() {
   return (
     <div className="bg-white font-sans overflow-x-hidden text-slate-900">
       <SEO
-        title="Optimum Prints | Premium Printing Solutions"
+        title="Printer Mania | Premium Printing Solutions"
         description="Shop genuine printers, ink, and toner in Pasadena, CA. Premium business printing solutions with nationwide shipping."
         keywords="Buy HP Printers Online, Genuine HP Ink and Toner, HP LaserJet, HP OfficeJet, Printer Accessories, Business Printing Solutions, Pasadena Tech Store"
       />
@@ -79,7 +79,14 @@ export default function Home() {
         <Hero products={data.all} />
       </div>
       {/* 2. CATEGORY SECTION */}
-      <div className="py-10 md:py-0">
+
+      {/* 3. FEATURED PRODUCTS (TABS) */}
+      <FeaturedTabs
+        printers={data.printers}
+        accessories={data.accessories}
+        loading={data.loading}
+      />
+      <div >
         <ShopByCategory categories={data.categories} />
       </div>
       <CategorySpotlight
@@ -89,15 +96,7 @@ export default function Home() {
         imagePosition="left"
       />
 
-      {/* 2. SALE BANNERS */}
-      <SaleBanners />
 
-      {/* 3. FEATURED PRODUCTS (TABS) */}
-      <FeaturedTabs
-        printers={data.printers}
-        accessories={data.accessories}
-        loading={data.loading}
-      />
 
       {/* 4. PROMO BANNER */}
       <PromoSection />

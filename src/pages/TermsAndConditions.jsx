@@ -11,20 +11,20 @@ export default function TermsAndConditions() {
       <section>
         <h2>Agreement To Our Legal Terms</h2>
         <p>
-          We are Optimum Prints LLC ("Company," "we," "us," "our"), a company registered in California, United States at 437 N Illinois St, Indianapolis, IN 46204, United States.
+          We are Printer Mania LLC ("Company," "we," "us," "our"), a company registered in California, United States at 111 S Princess St, Shepherdstown, WV 25443, United States.
 
         </p>
         <p>
-          We operate the website <a href="http://optimumprints.shop/">http://optimumprints.shop/</a> (the "Site"), as well as any other related products and services that refer or link to these legal terms (the "Legal Terms") (collectively, the "Services").
+          We operate the website <a href="http://printermania.shop/">http://printermania.shop/</a> (the "Site"), as well as any other related products and services that refer or link to these legal terms (the "Legal Terms") (collectively, the "Services").
         </p>
         <p>
-          Optimum Prints Solutions is your trusted destination for authentic, high-performance printers and printing accessories from HP and other leading technology brands.
+          Printer Mania Solutions is your trusted destination for authentic, high-performance printers and printing accessories from HP and other leading technology brands.
         </p>
         <p>
-          You can contact us by email at <a href="mailto:info@optimumprints.shop">info@optimumprints.shop</a>, or by mail to 437 N Illinois St, Indianapolis, IN 46204, United States.
+          You can contact us by email at <a href="mailto:info@printermania.shop">info@printermania.shop</a>, or by mail to 111 S Princess St, Shepherdstown, WV 25443, United States.
         </p>
         <p>
-          These Legal Terms constitute a legally binding agreement made between you, whether personally or on behalf of an entity ("you"), and Optimum Prints LLC, concerning your access to and use of the Services. You agree that by accessing the Services, you have read, understood, and agreed to be bound by all of these Legal Terms. <strong>IF YOU DO NOT AGREE WITH ALL OF THESE LEGAL TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SERVICES AND YOU MUST DISCONTINUE USE IMMEDIATELY.</strong>
+          These Legal Terms constitute a legally binding agreement made between you, whether personally or on behalf of an entity ("you"), and Printer Mania LLC, concerning your access to and use of the Services. You agree that by accessing the Services, you have read, understood, and agreed to be bound by all of these Legal Terms. <strong>IF YOU DO NOT AGREE WITH ALL OF THESE LEGAL TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SERVICES AND YOU MUST DISCONTINUE USE IMMEDIATELY.</strong>
         </p>
         <p>
           Supplemental terms and conditions or documents that may be posted on the Services from time to time are hereby expressly incorporated herein by reference. We reserve the right, in our sole discretion, to make changes or modifications to these Legal Terms at any time and for any reason. We will alert you about any changes by updating the "Last updated" date of these Legal Terms, and you waive any right to receive specific notice of each such change. It is your responsibility to periodically review these Legal Terms to stay informed of updates. You will be subject to, and will be deemed to have been made aware of and to have accepted, the changes in any revised Legal Terms by your continued use of the Services after the date such revised Legal Terms are posted.
@@ -107,7 +107,7 @@ export default function TermsAndConditions() {
           Except as set out in this section or elsewhere in our Legal Terms, no part of the Services and no Content or Marks may be copied, reproduced, aggregated, republished, uploaded, posted, publicly displayed, encoded, translated, transmitted, distributed, sold, licensed, or otherwise exploited for any commercial purpose whatsoever, without our express prior written permission.
         </p>
         <p>
-          If you wish to make any use of the Services, Content, or Marks other than as set out in this section or elsewhere in our Legal Terms, please address your request to: <a href="mailto:info@optimumprints.shop">info@optimumprints.shop</a>. If we ever grant you the permission to post, reproduce, or publicly display any part of our Services or Content, you must identify us as the owners or licensors of the Services, Content, or Marks and ensure that any copyright or proprietary notice appears or is visible on posting, reproducing, or displaying our Content.
+          If you wish to make any use of the Services, Content, or Marks other than as set out in this section or elsewhere in our Legal Terms, please address your request to: <a href="mailto:info@printermania.shop">info@printermania.shop</a>. If we ever grant you the permission to post, reproduce, or publicly display any part of our Services or Content, you must identify us as the owners or licensors of the Services, Content, or Marks and ensure that any copyright or proprietary notice appears or is visible on posting, reproducing, or displaying our Content.
         </p>
         <p>
           We reserve all rights not expressly granted to you in and to the Services, Content, and Marks.
@@ -179,7 +179,7 @@ export default function TermsAndConditions() {
       <section>
         <h2>7. Return Policy</h2>
         <p>
-          Please review our Return Policy prior to making any purchases: <a href="http://optimumprints.shop/return-policy">http://optimumprints.shop/return-policy</a>.
+          Please review our Return Policy prior to making any purchases: <a href="http://printermania.shop/return-policy">http://printermania.shop/return-policy</a>.
         </p>
       </section>
 
@@ -267,7 +267,7 @@ export default function TermsAndConditions() {
       <section>
         <h2>12. Privacy Policy</h2>
         <p>
-          We care about data privacy and security. Please review our Privacy Policy: <a href="http://optimumprints.shop/privacy-policy">http://optimumprints.shop/privacy-policy</a>. By using the Services, you agree to be bound by our Privacy Policy, which is incorporated into these Legal Terms. Please be advised the Services are hosted in the United States. If you access the Services from any other region of the world with laws or other requirements governing personal data collection, use, or disclosure that differ from applicable laws in the United States, then through your continued use of the Services, you are transferring your data to the United States, and you expressly consent to have your data transferred to and processed in the United States.
+          We care about data privacy and security. Please review our Privacy Policy: <a href="http://printermania.shop/privacy-policy">http://printermania.shop/privacy-policy</a>. By using the Services, you agree to be bound by our Privacy Policy, which is incorporated into these Legal Terms. Please be advised the Services are hosted in the United States. If you access the Services from any other region of the world with laws or other requirements governing personal data collection, use, or disclosure that differ from applicable laws in the United States, then through your continued use of the Services, you are transferring your data to the United States, and you expressly consent to have your data transferred to and processed in the United States.
         </p>
       </section>
 
@@ -369,11 +369,11 @@ export default function TermsAndConditions() {
         </p>
         <div className="bg-gray-50 p-8 rounded-sm border border-[#e9e9e9] my-8 not-prose">
           <address className="not-italic text-gray-700 font-bold leading-relaxed space-y-2 capitalize ">
-            <p className="text-black font-extrabold">Optimum Prints LLC</p>
+            <p className="text-black font-extrabold">Printer Mania LLC</p>
             <p>Direct Distribution</p>
-            <p>437 N Illinois St, Indianapolis, IN 46204, United States</p>
+            <p>111 S Princess St, Shepherdstown, WV 25443, United States</p>
             <p>United States</p>
-            <p className="pt-4 text-[#1447E6] font-extrabold lowercase">Email: info@optimumprints.shop</p>
+            <p className="pt-4 text-[#1447E6] font-extrabold lowercase">Email: info@printermania.shop</p>
           </address>
         </div>
       </section>

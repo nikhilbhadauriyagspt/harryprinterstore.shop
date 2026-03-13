@@ -90,7 +90,7 @@ export default function ProductDetail() {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-          className="w-10 h-10 border-4 border-slate-100 border-t-[#10b981] rounded-full mb-6"
+          className="w-10 h-10 border-4 border-slate-100 border-t-[#4F46E5] rounded-full mb-6"
         />
         <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Loading catalog...</p>
       </div>
@@ -105,7 +105,7 @@ export default function ProductDetail() {
         </div>
         <h2 className="text-2xl font-bold text-slate-900 mb-2 tracking-tight">Product not found</h2>
         <p className="text-slate-500 mb-10 max-w-md mx-auto text-sm font-medium">The requested hardware could not be located in our inventory.</p>
-        <Link to="/shop" className="px-10 py-4 bg-slate-950 text-white font-bold text-[11px] uppercase tracking-widest transition-all rounded-2xl hover:bg-[#10b981]">Return To Catalog</Link>
+        <Link to="/shop" className="px-10 py-4 bg-slate-950 text-white font-bold text-[11px] uppercase tracking-widest transition-all rounded-2xl hover:bg-[#4F46E5]">Return To Catalog</Link>
       </div>
     );
   }
@@ -121,9 +121,9 @@ export default function ProductDetail() {
       <div className="bg-slate-50 border-b border-slate-100 py-6">
         <div className="max-w-full mx-auto px-6 lg:px-12 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <nav className="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-[3px]">
-            <Link to="/" className="hover:text-[#10b981] transition-colors">Home</Link>
+            <Link to="/" className="hover:text-[#4F46E5] transition-colors">Home</Link>
             <ChevronRight size={14} className="text-slate-300" />
-            <Link to="/shop" className="hover:text-[#10b981] transition-colors">Catalog</Link>
+            <Link to="/shop" className="hover:text-[#4F46E5] transition-colors">Catalog</Link>
             <ChevronRight size={14} className="text-slate-300" />
             <span className="text-slate-900 truncate max-w-[200px]">{product.name}</span>
           </nav>
@@ -151,14 +151,14 @@ export default function ProductDetail() {
 
                 <button
                   onClick={() => toggleWishlist(product)}
-                  className={`absolute top-8 right-8 h-12 w-12 flex items-center justify-center transition-all bg-white rounded-2xl shadow-xl hover:shadow-slate-200 ${isInWishlist(product.id) ? 'text-red-500' : 'text-slate-300 hover:text-red-500'}`}
+                  className={`absolute top-8 right-8 h-12 w-12 flex items-center justify-center transition-all bg-white rounded-2xl border border-slate-100 hover:border-red-500/30 ${isInWishlist(product.id) ? 'text-red-500' : 'text-slate-300 hover:text-red-500'}`}
                 >
                   <Heart size={22} fill={isInWishlist(product.id) ? "currentColor" : "none"} />
                 </button>
 
                 <div className="absolute bottom-8 left-8">
-                  <div className="px-5 py-2 bg-white text-slate-900 text-[10px] font-black uppercase tracking-[3px] flex items-center gap-2 rounded-xl shadow-sm border border-slate-100">
-                    <div className="w-2 h-2 bg-[#10b981] rounded-full animate-pulse"></div> Ready To Ship
+                  <div className="px-5 py-2 bg-white text-slate-900 text-[10px] font-black uppercase tracking-[3px] flex items-center gap-2 rounded-full border border-slate-100">
+                    <div className="w-2 h-2 bg-[#4F46E5] rounded-full animate-pulse"></div> Ready To Ship
                   </div>
                 </div>
               </div>
@@ -168,7 +168,7 @@ export default function ProductDetail() {
                   {images.map((img, idx) => (
                     <button
                       key={idx} onClick={() => setActiveImage(idx)}
-                      className={`h-24 w-24 border-2 rounded-2xl flex-shrink-0 flex items-center justify-center p-4 transition-all bg-white overflow-hidden ${activeImage === idx ? 'border-[#10b981]' : 'border-slate-100 hover:border-slate-200'}`}
+                      className={`h-24 w-24 border-2 rounded-2xl flex-shrink-0 flex items-center justify-center p-4 transition-all bg-white overflow-hidden ${activeImage === idx ? 'border-[#4F46E5]' : 'border-slate-100 hover:border-slate-200'}`}
                     >
                       <img src={img} alt="" className="max-w-full max-h-full object-contain mix-blend-multiply" />
                     </button>
@@ -184,7 +184,7 @@ export default function ProductDetail() {
 
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <span className="text-[11px] font-black text-[#10b981] uppercase tracking-[3px]">
+                  <span className="text-[11px] font-black text-[#4F46E5] uppercase tracking-[3px]">
                     {product.brand_name || 'Premium'}
                   </span>
                   <div className="h-4 w-px bg-slate-200"></div>
@@ -218,19 +218,19 @@ export default function ProductDetail() {
               {/* Purchase Controls */}
               <div className="space-y-8 pt-4">
                 <div className="flex flex-col sm:flex-row items-center gap-6">
-                  <div className="h-16 px-6 bg-slate-50 border border-slate-100 rounded-2xl flex items-center gap-10 w-full sm:w-auto shadow-inner">
-                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="text-slate-400 hover:text-[#10b981] transition-all active:scale-125">
+                  <div className="h-16 px-6 bg-slate-50 border border-slate-100 rounded-2xl flex items-center gap-10 w-full sm:w-auto">
+                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="text-slate-400 hover:text-[#4F46E5] transition-all active:scale-125">
                       <Minus size={20} strokeWidth={3} />
                     </button>
                     <span className="text-xl font-black text-slate-950 min-w-[24px] text-center">{quantity}</span>
-                    <button onClick={() => setQuantity(quantity + 1)} className="text-slate-400 hover:text-[#10b981] transition-all active:scale-125">
+                    <button onClick={() => setQuantity(quantity + 1)} className="text-slate-400 hover:text-[#4F46E5] transition-all active:scale-125">
                       <Plus size={20} strokeWidth={3} />
                     </button>
                   </div>
 
                   <button
                     onClick={handleAddToCart} disabled={isAdded}
-                    className={`flex-1 h-16 flex items-center justify-center gap-4 font-bold text-sm uppercase tracking-widest transition-all active:scale-95 disabled:opacity-70 rounded-2xl shadow-xl ${isAdded ? 'bg-emerald-500 text-white' : 'bg-slate-950 text-white hover:bg-[#10b981] shadow-slate-200'}`}
+                    className={`flex-1 h-16 flex items-center justify-center gap-4 font-bold text-sm uppercase tracking-widest transition-all active:scale-95 disabled:opacity-70 rounded-full ${isAdded ? 'bg-emerald-500 text-white' : 'bg-slate-950 text-white hover:bg-[#4F46E5]'}`}
                   >
                     {isAdded ? <><CheckCircle2 size={22} /> System Added</> : <><ShoppingCart size={20} /> Add To Cart</>}
                   </button>
@@ -238,8 +238,8 @@ export default function ProductDetail() {
 
                 {/* Service Highlights */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="p-6 rounded-[1.5rem] bg-slate-50 border border-slate-100 flex items-center gap-5 transition-all hover:bg-white hover:border-[#10b981]/20">
-                    <div className="h-12 w-12 bg-white rounded-2xl text-[#10b981] flex items-center justify-center shadow-sm">
+                  <div className="p-6 rounded-[1.5rem] bg-slate-50 border border-slate-100 flex items-center gap-5 transition-all hover:bg-white hover:border-[#4F46E5]/20">
+                    <div className="h-12 w-12 bg-white rounded-2xl text-[#4F46E5] flex items-center justify-center border border-slate-50">
                       <Truck size={24} />
                     </div>
                     <div>
@@ -247,8 +247,8 @@ export default function ProductDetail() {
                       <p className="text-[11px] font-medium text-slate-400 uppercase tracking-widest">Safe Logistics</p>
                     </div>
                   </div>
-                  <div className="p-6 rounded-[1.5rem] bg-slate-50 border border-slate-100 flex items-center gap-5 transition-all hover:bg-white hover:border-[#10b981]/20">
-                    <div className="h-12 w-12 bg-white rounded-2xl text-[#10b981] flex items-center justify-center shadow-sm">
+                  <div className="p-6 rounded-[1.5rem] bg-slate-50 border border-slate-100 flex items-center gap-5 transition-all hover:bg-white hover:border-[#4F46E5]/20">
+                    <div className="h-12 w-12 bg-white rounded-2xl text-[#4F46E5] flex items-center justify-center border border-slate-50">
                       <ShieldCheck size={24} />
                     </div>
                     <div>
@@ -268,10 +268,10 @@ export default function ProductDetail() {
                   ].map(tab => (
                     <button
                       key={tab.id} onClick={() => setActiveTab(tab.id)}
-                      className={`pb-5 text-[12px] font-bold uppercase tracking-widest relative transition-colors ${activeTab === tab.id ? 'text-[#10b981]' : 'text-slate-400 hover:text-slate-900'}`}
+                      className={`pb-5 text-[12px] font-bold uppercase tracking-widest relative transition-colors ${activeTab === tab.id ? 'text-[#4F46E5]' : 'text-slate-400 hover:text-slate-900'}`}
                     >
                       {tab.label}
-                      {activeTab === tab.id && <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-1 bg-[#10b981] rounded-t-full" />}
+                      {activeTab === tab.id && <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-1 bg-[#4F46E5] rounded-t-full" />}
                     </button>
                   ))}
                 </div>
@@ -296,10 +296,10 @@ export default function ProductDetail() {
                     <div className="bg-slate-950 p-10 rounded-[2.5rem] text-white relative overflow-hidden">
                       <h4 className="text-xl font-black mb-4 capitalize">Need technical assistance?</h4>
                       <p className="text-slate-400 text-base font-medium mb-8 leading-relaxed">Our specialists are available to provide configuration support and hardware guidance for your new system.</p>
-                      <Link to="/contact" className="inline-flex items-center gap-4 bg-[#10b981] text-white px-10 py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#059669] transition-all shadow-xl shadow-[#10b981]/20">
+                      <Link to="/contact" className="inline-flex items-center gap-4 bg-[#4F46E5] text-white px-10 py-4 rounded-full text-xs font-black uppercase tracking-widest hover:bg-[#059669] transition-all active:scale-95">
                         Contact Support Center <ArrowRight size={16} />
                       </Link>
-                      <div className="absolute top-0 right-0 w-48 h-48 bg-[#10b981] opacity-5 blur-[80px] rounded-full" />
+                      <div className="absolute top-0 right-0 w-48 h-48 bg-[#4F46E5] opacity-5 blur-[80px] rounded-full" />
                     </div>
                   )}
                 </div>
@@ -314,12 +314,12 @@ export default function ProductDetail() {
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
               <div>
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="w-10 h-[2px] bg-[#10b981]"></span>
-                  <span className="text-[#10b981] text-[11px] font-black uppercase tracking-[3px]">Recommended</span>
+                  <span className="w-10 h-[2px] bg-[#4F46E5]"></span>
+                  <span className="text-[#4F46E5] text-[11px] font-black uppercase tracking-[3px]">Recommended</span>
                 </div>
                 <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight capitalize">Complementary hardware</h2>
               </div>
-              <Link to="/shop" className="group flex items-center gap-4 text-slate-950 font-black text-xs uppercase tracking-widest border-b-2 border-slate-100 pb-2 hover:border-[#10b981] transition-all">
+              <Link to="/shop" className="group flex items-center gap-4 text-slate-950 font-black text-xs uppercase tracking-widest border-b-2 border-slate-100 pb-2 hover:border-[#4F46E5] transition-all">
                 Full catalog <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
               </Link>
             </div>
@@ -332,12 +332,12 @@ export default function ProductDetail() {
                   className="group flex flex-col transition-all duration-500"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                  <div className="aspect-square bg-slate-50 border border-slate-100 rounded-[2rem] flex items-center justify-center p-6 mb-6 overflow-hidden relative group-hover:bg-white group-hover:shadow-2xl group-hover:shadow-slate-100 group-hover:border-[#10b981]/20 transition-all">
+                  <div className="aspect-square bg-slate-50 border border-slate-100 rounded-[2rem] flex items-center justify-center p-6 mb-6 overflow-hidden relative group-hover:bg-white group-hover:border-[#4F46E5]/20 transition-all">
                     <img src={getImagePath(p.images)} alt="" className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-700 mix-blend-multiply" onError={(e) => { e.target.src = "/logo/fabicon.png"; }} />
                   </div>
                   <div className="flex flex-col px-2">
                     <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 block">{p.brand_name || 'Premium'}</span>
-                    <h4 className="text-[14px] font-bold text-slate-800 group-hover:text-[#10b981] transition-colors leading-snug line-clamp-2 mb-3">{p.name}</h4>
+                    <h4 className="text-[14px] font-bold text-slate-800 group-hover:text-[#4F46E5] transition-colors leading-snug line-clamp-2 mb-3">{p.name}</h4>
                     <p className="text-[16px] font-black text-slate-950 mt-auto tracking-tighter">${Number(p.price).toFixed(2)}</p>
                   </div>
                 </Link>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://optimumprints.shop/sitemap.xml
+Sitemap: https://printermania.shop/sitemap.xml

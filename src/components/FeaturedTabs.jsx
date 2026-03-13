@@ -3,11 +3,10 @@ import { motion } from "framer-motion";
 import {
   Heart,
   ArrowRight,
-  Plus,
-  Sparkles,
-  ShoppingBag
+  ShoppingBag,
+  Sparkles
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import API_BASE_URL from "../config";
 
@@ -15,10 +14,9 @@ export default function FeaturedTabs() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/products?limit=24&is_featured=1`)
+    fetch(`${API_BASE_URL}/products?limit=12&is_featured=1`)
       .then(res => res.json())
       .then(data => {
         if (data.status === 'success') {
@@ -40,95 +38,86 @@ export default function FeaturedTabs() {
   };
 
   return (
-    <section className="w-full py-24 font-['Heebo'] bg-white">
-      <div className="max-w-full mx-auto px-6 lg:px-12">
-        
-        {/* PREMIUM CREATIVE HEADER */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="px-4 py-1.5 bg-[#10b981]/10 text-[#10b981] text-[11px] font-black uppercase tracking-[3px] rounded-full flex items-center gap-2">
-                <Sparkles size={12} /> Discover best sellers
-              </span>
-            </div>
-            
-            <h2 className="text-4xl md:text-5xl font-black text-slate-950 capitalize tracking-tight mb-6">
-              Our featured <span className="text-[#10b981]">studio</span> collection
-            </h2>
-            
-            <p className="text-slate-500 text-lg md:text-xl font-medium leading-relaxed max-w-2xl">
-              Elevate your workspace with our handpicked selection of high-performance printers and genuine supplies, engineered for precision and long-lasting quality.
-            </p>
-          </div>
+    <section className="w-full py-16 md:py--0 font-['Heebo'] bg-white">
+      <div className="w-full px-4 sm:px-10 lg:px-24">
 
-          <div className="flex shrink-0">
-            <Link to="/shop" className="group flex items-center gap-4 py-4 px-10 bg-slate-950 text-white rounded-2xl font-bold hover:bg-[#10b981] transition-all shadow-2xl shadow-slate-200">
-              Explore catalog <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
-            </Link>
-          </div>
+        {/* LIGHT MINIMAL HEADER */}
+        <div className="flex flex-col items-center text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+            Featured Studio Collection
+          </h2>
+          <div className="h-1 w-12 bg-[#4f46e5] my-4 rounded-full"></div>
+          <p className="text-slate-500 text-sm md:text-base font-medium max-w-2xl leading-relaxed">
+            Discover our handpicked selection of high-performance hardware and genuine supplies, engineered for precision and long-lasting workspace quality.
+          </p>
         </div>
 
-        {/* REFINED PRODUCT GRID */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 md:gap-5">
+        {/* ULTRA-LIGHT PRODUCT GRID - 6 PRODUCTS PER ROW */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
           {loading ? (
-            [1,2,3,4,5,6].map(i => <div key={i} className="aspect-[4/5] bg-slate-50 animate-pulse rounded-3xl"></div>)
+            [1, 2, 3, 4, 5, 6].map(i => <div key={i} className="aspect-[3/4] bg-slate-50 animate-pulse rounded-2xl border border-slate-100"></div>)
           ) : (
             products.map((p, idx) => (
-              <motion.div 
-                key={p.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.05 }}
-                className="group flex flex-col"
-              >
-                {/* Image Area - Premium Glass/Studio Look */}
-                <div className="relative aspect-[4/5] mb-6 bg-slate-50 border border-slate-100 rounded-[2rem] overflow-hidden flex items-center justify-center p-8 transition-all duration-500 group-hover:bg-white group-hover:border-[#10b981]/20 group-hover:shadow-2xl group-hover:shadow-slate-100">
+              <div key={p.id} className="group flex flex-col h-full">
+
+                {/* Compact Image Area */}
+                <div className="relative aspect-[3/4] mb-4 bg-gray-200 border border-transparent rounded-2xl overflow-hidden flex items-center justify-center p-4 transition-all duration-500 group-hover:bg-white group-hover:border-slate-100">
                   <Link to={`/product/${p.slug}`} className="w-full h-full flex items-center justify-center">
-                    <img 
-                      src={getImagePath(p.images)} 
-                      alt={p.name} 
-                      className="w-full h-full object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-110"
+                    <img
+                      src={getImagePath(p.images)}
+                      alt={p.name}
+                      className="w-full h-full object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-105"
+                      onError={(e) => { e.target.src = "/logo/fabicon.png"; }}
                     />
                   </Link>
 
-                  {/* Top Right Wishlist */}
-                  <button 
+                  {/* Minimal Wishlist */}
+                  <button
                     onClick={() => toggleWishlist(p)}
-                    className={`absolute top-4 right-4 w-10 h-10 rounded-2xl bg-white/80 backdrop-blur-md shadow-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 ${isInWishlist(p.id) ? 'text-red-500' : 'text-slate-400 hover:text-red-500'}`}
+                    className={`absolute top-3 right-3 w-8 h-8 rounded-lg bg-white/80 backdrop-blur-sm border border-slate-100 flex items-center justify-center transition-all ${isInWishlist(p.id) ? 'text-red-500' : 'text-slate-400 hover:text-red-500'}`}
                   >
-                    <Heart size={18} className={isInWishlist(p.id) ? 'fill-red-500' : ''} />
+                    <Heart size={14} className={isInWishlist(p.id) ? 'fill-red-500' : ''} />
                   </button>
 
-                  {/* Bottom Action Bar */}
-                  <div className="absolute bottom-4 left-4 right-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                    <button 
+                  {/* Light Quick Add */}
+                  <div className="absolute bottom-3 left-3 right-3 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                    <button
                       onClick={() => addToCart(p)}
-                      className="w-full py-3 bg-slate-950 text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-[#10b981] transition-all flex items-center justify-center gap-2"
+                      className="w-full py-2 bg-slate-900 text-white text-[9px] font-bold uppercase tracking-widest rounded-lg hover:bg-[#4f46e5] transition-all flex items-center justify-center gap-2"
                     >
-                      <Plus size={16} /> Quick Add
+                      <ShoppingBag size={12} /> Quick Add
                     </button>
                   </div>
                 </div>
 
-                {/* Refined Content Area */}
-                <div className="px-2">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-[2px] block mb-2">{p.brand_name || 'HP SUPPLY'}</span>
+                {/* Compact Content */}
+                <div className="px-1">
+                  <span className="text-[8px] font-black text-[#4f46e5] uppercase tracking-widest block mb-1">{p.brand_name || 'Premium'}</span>
+
                   <Link to={`/product/${p.slug}`}>
-                    <h3 className="text-[15px] font-bold text-slate-800 leading-tight line-clamp-2 min-h-[40px] group-hover:text-[#10b981] transition-colors">
+                    <h3 className="text-[13px] font-bold text-slate-800 leading-tight line-clamp-2 min-h-[32px] group-hover:text-[#4f46e5] transition-colors">
                       {p.name}
                     </h3>
                   </Link>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="text-lg font-black text-slate-950 tracking-tighter">${p.price}</span>
-                    <div className="flex gap-0.5 text-[#10b981]">
-                      {[1,2,3,4,5].map(s => <span key={s} className="w-1 h-1 bg-current rounded-full"></span>)}
-                    </div>
+
+                  <div className="mt-2 pt-2 border-t border-slate-50 flex items-center justify-between">
+                    <span className="text-[15px] font-black text-slate-900">${p.price}</span>
+                    <Link to={`/product/${p.slug}`} className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1 hover:text-[#4f46e5] transition-colors">
+                      Details <ArrowRight size={10} />
+                    </Link>
                   </div>
                 </div>
 
-              </motion.div>
+              </div>
             ))
           )}
+        </div>
+
+        {/* Bottom Action */}
+        <div className="mt-16 flex justify-center">
+          <Link to="/shop" className="px-10 py-4 border border-slate-900 text-slate-900 rounded-full font-bold text-[11px] uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all">
+            View All Products
+          </Link>
         </div>
 
       </div>
